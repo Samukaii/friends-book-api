@@ -11,6 +11,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     UserDetails findByNickname(String nickname);
     UserDetails findByNicknameOrEmail(String nickname, String email);
     @Query(value = "select u from users u where u.active = true and u.id <> ?1 and " +
-            "(lower(concat(u.name, ' ', u.surname, ' ', u.nickname)) like %?2%)")
+            "(lower(concat(u.name, ' ', u.surname, ' ', u.nickname)) like %?2%) order by u.name asc")
     List<User> searchAllByText(Integer currentUserId, String search);
 }

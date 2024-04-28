@@ -23,7 +23,7 @@ public class PostsController {
 
     @GetMapping
     public ResponseEntity<List<PostResponseDTO>> getAllPosts() {
-        return ResponseEntity.ok(service.getAll());
+        return ResponseEntity.ok(service.getAllByCurrentUserFollowing());
     }
 
     @GetMapping("/by_user/{id}")

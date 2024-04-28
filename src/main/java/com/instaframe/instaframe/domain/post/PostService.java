@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,8 +56,14 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public List<PostResponseDTO> getAll() {
-        List<Post> posts = this.postRepository.findAllByActiveTrue();
+    public List<PostResponseDTO> getAllByCurrentUserFollowing() {
+        User currentUser = usersService.getAuthenticatedUser();
+
+        List<User> usersToGetPosts = new ArrayList<>(currentUser.getFollowing());
+
+        usersToGetPosts.add(currentUser);
+
+        List<Post> posts = this.postRepository.findPostsByUsers(usersToGetPosts);
 
         return posts.stream().map(this::postToPostDTO).toList();
     }

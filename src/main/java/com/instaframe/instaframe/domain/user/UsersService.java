@@ -146,7 +146,7 @@ public class UsersService {
         return followers.stream().map(this::userToUserDTO).toList();
     }
 
-    User getAuthenticatedUser() {
+    public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();
