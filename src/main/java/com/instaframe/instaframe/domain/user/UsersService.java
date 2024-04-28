@@ -22,6 +22,8 @@ public class UsersService {
 
     public UserResponseDTO register(RegisterDTO request) {
         validateUserEmailAlreadyRegistered(request.email());
+        validateNicknameAlreadyRegistered(request.nickname());
+        validatePasswordConfirmation(request);
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(request.password());
         User newUser = new User(request, encryptedPassword);
@@ -80,7 +82,10 @@ public class UsersService {
                 user.getName(),
                 user.getSurname(),
                 user.getEmail(),
+                user.getNickname(),
                 isFollowing(user),
+                user.getFollowersCount(),
+                user.getFollowingCount(),
                 profile,
                 cover
         );
@@ -98,8 +103,13 @@ public class UsersService {
             throw new UserCannotFollowThemselvesException();
 
         user.getFollowing().add(userToFollow);
+        user.setFollowingCount(user.getFollowing().size());
+
+        userToFollow.getFollowers().add(user);
+        userToFollow.setFollowersCount(userToFollow.getFollowers().size());
 
         repository.save(user);
+        repository.save(userToFollow);
     }
 
     public void unfollow(Integer userId) {
@@ -111,8 +121,13 @@ public class UsersService {
             throw new UserIsNotBeingFollowedException();
 
         user.getFollowing().remove(userToUnfollow);
+        user.setFollowingCount(user.getFollowing().size());
+
+        userToUnfollow.getFollowers().remove(user);
+        userToUnfollow.setFollowersCount(userToUnfollow.getFollowers().size());
 
         repository.save(user);
+        repository.save(userToUnfollow);
     }
 
     public List<UserResponseDTO> getFollowers(Integer userId) {
@@ -149,6 +164,16 @@ public class UsersService {
 
     private void validateUserEmailAlreadyRegistered(String email) {
         if(repository.findByEmail(email) != null)
-            throw new UserAlreadyRegisteredException();
+            throw new UserEmailAlreadyRegisteredException();
+    }
+
+    private void validateNicknameAlreadyRegistered(String email) {
+        if(repository.findByNickname(email) != null)
+            throw new UserNicknameAlreadyRegisteredException();
+    }
+
+    private void validatePasswordConfirmation(RegisterDTO dto) {
+        if(!Objects.equals(dto.password(), dto.passwordConfirmation()))
+            throw new PasswordsDoesNotMatchException();
     }
 }

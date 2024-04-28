@@ -10,7 +10,10 @@ public record UserResponseDTO (
         String name,
         String surname,
         String email,
+        String nickname,
         Boolean following,
+        Integer followersCount,
+        Integer followingCount,
         @Nullable
         Optional<FileDTO> profile,
         @Nullable

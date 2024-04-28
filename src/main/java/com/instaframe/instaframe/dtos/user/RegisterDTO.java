@@ -10,6 +10,10 @@ public record RegisterDTO(
         @NotBlank
         String email,
         @NotBlank
-        String password
+        String nickname,
+        @NotBlank
+        String password,
+        @NotBlank
+        String passwordConfirmation
 ) {
 }

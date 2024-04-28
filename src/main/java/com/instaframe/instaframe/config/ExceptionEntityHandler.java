@@ -27,8 +27,13 @@ public class ExceptionEntityHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
     }
 
-    @ExceptionHandler(UserAlreadyRegisteredException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyRegistered(UserAlreadyRegisteredException exception) {
+    @ExceptionHandler(UserEmailAlreadyRegisteredException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyRegistered(UserEmailAlreadyRegisteredException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UserNicknameAlreadyRegisteredException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyRegistered(UserNicknameAlreadyRegisteredException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(exception.getMessage()));
     }
 
@@ -55,5 +60,10 @@ public class ExceptionEntityHandler {
     @ExceptionHandler(UserIsNotBeingFollowedException.class)
     public ResponseEntity<ErrorResponseDTO> handleUserIsNotFollowedException(UserIsNotBeingFollowedException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(exception.getMessage()));
+    }
+
+    @ExceptionHandler(PasswordsDoesNotMatchException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserIsNotFollowedException(PasswordsDoesNotMatchException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
     }
 }

@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +24,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
+    private Boolean active;
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -32,6 +36,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String surname;
 
+    @Column(nullable = false)
+    private String nickname;
+
     @Column(name = "profile_url")
     private String profileUrl;
 
@@ -40,6 +47,12 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(name = "followers_count")
+    private Integer followersCount;
+
+    @Column(name = "following_count")
+    private Integer followingCount;
 
     @ManyToMany
     @JoinTable(
@@ -53,8 +66,10 @@ public class User implements UserDetails {
     private List<User> followers;
 
     public User(RegisterDTO registerDTO, String encryptedPassword) {
+        this.active = true;
         this.name = registerDTO.name();
         this.surname = registerDTO.surname();
+        this.nickname = registerDTO.nickname();
         this.email = registerDTO.email();
         this.password = encryptedPassword;
     }
