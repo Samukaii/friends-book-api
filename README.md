@@ -14,10 +14,15 @@ Friends book é um projeto de rede social com várias funcionalidades essenciais
 ## Recursos Principais
 
 ✅ Cadastro e autenticação de usuários
+
 ✅ Área de perfil e personalização
+
 ✅ Publicações com imagens e textos
+
 ✅ Possibilidade de encontrar novos amigos através da aba "Encontrar amigos"
+
 ✅ Possibilidade de seguir ou deixar de seguir amigos
+
 ✅ Segmentação de conteúdo com base nos usuários que você segue
 
 ## Configuração e Execução
